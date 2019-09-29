@@ -1,0 +1,48 @@
+version: "3.4"
+
+networks:
+  producer-consumer:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+services:
+  activemq:
+    image: webcenter/activemq:latest
+    ports:
+      - 8161:8161
+      - 61616:61616
+    networks:
+      producer-consumer:
+        ipv4_address: 172.30.0.10
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      producer-consumer:
+        ipv4_address: 172.30.0.2
+
+  consumer:
+    image: consumer
+    ports:
+      - "8081:8081"
+    networks:
+      producer-consumer:
+        ipv4_address: 172.30.0.3
+#    depends_on:
+#      - activemq
+
+  producer:
+    image: producer
+    ports:
+      - "8080:8080"
+    networks:
+      producer-consumer:
+        ipv4_address: 172.30.0.4
+    depends_on:
+      - consumer
+
+

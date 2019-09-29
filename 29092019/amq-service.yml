@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: amq-service
+  namespace: bluegreen-namespace
+spec:
+  selector:
+    app: amq
+  type: ClusterIP
+  ports:
+  - name: tcp-port
+    port: 61616
+    targetPort: 61616

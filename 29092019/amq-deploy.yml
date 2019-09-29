@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: activemq
+  namespace: bluegreen-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: activemq
+  template:
+    metadata:
+      labels:
+        app: activemq
+    spec:
+      containers:
+      - name: activemq
+        image: docker.io/webcenter/activemq
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8161
+        - containerPort: 61616
